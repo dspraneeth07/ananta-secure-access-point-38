@@ -2,19 +2,20 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell, LabelList } from 'recharts';
 import { mockCriminals, telanganaDistricts } from '@/data/mockCriminals';
 
-// Calculate real statistics from mock data
-const arrestedCount = mockCriminals.filter(c => c.presentStatus === 'Arrested').length;
-const abscondingCount = mockCriminals.filter(c => c.presentStatus === 'Abscon ding').length;
+// Mock data with specific percentages: 60% arrested, 40% absconding
+const totalCriminals = mockCriminals.length;
+const arrestedCount = Math.floor(totalCriminals * 0.6); // 60%
+const abscondingCount = totalCriminals - arrestedCount; // 40%
 
 const accusedStatusData = [
   { status: 'Arrested', count: arrestedCount, fill: '#22c55e' },
   { status: 'Absconding', count: abscondingCount, fill: '#ef4444' },
 ];
 
-// Calculate domicile data from mock criminals
+// Calculate domicile data from mock criminals - renamed "Other Nations" to "Foreigners"
 const telanganaCount = mockCriminals.filter(c => c.state === 'Telangana').length;
 const otherStatesCount = mockCriminals.filter(c => c.country === 'India' && c.state !== 'Telangana').length;
 const internationalCount = mockCriminals.filter(c => c.country !== 'India').length;
@@ -22,10 +23,10 @@ const internationalCount = mockCriminals.filter(c => c.country !== 'India').leng
 const domicileData = [
   { state: 'Telangana', count: telanganaCount },
   { state: 'Other Indian States', count: otherStatesCount },
-  { state: 'International', count: internationalCount },
+  { state: 'Foreigners', count: internationalCount },
 ];
 
-// Calculate case status data from mock criminals with proper colors - FIXED VERSION
+// Calculate case status data from mock criminals with proper colors
 const caseStatusCounts = mockCriminals.reduce((acc, criminal) => {
   acc[criminal.caseStatus] = (acc[criminal.caseStatus] || 0) + 1;
   return acc;
@@ -54,6 +55,16 @@ const chartConfig = {
     label: "Cases",
     color: "hsl(var(--chart-2))",
   },
+};
+
+// Custom label component for bars
+const CustomLabel = (props: any) => {
+  const { x, y, width, value } = props;
+  return (
+    <text x={x + width / 2} y={y - 5} fill="#666" textAnchor="middle" dy={-6} fontSize="12">
+      {value}
+    </text>
+  );
 };
 
 const StatisticsSection = () => {
@@ -101,7 +112,9 @@ const StatisticsSection = () => {
                   <XAxis dataKey="state" fontSize={10} />
                   <YAxis fontSize={10} />
                   <ChartTooltip content={<ChartTooltipContent />} />
-                  <Bar dataKey="count" fill="#3b82f6" />
+                  <Bar dataKey="count" fill="#3b82f6">
+                    <LabelList content={CustomLabel} />
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </ChartContainer>
@@ -119,7 +132,7 @@ const StatisticsSection = () => {
           <CardContent>
             <ChartContainer config={chartConfig} className="h-[240px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={caseStatusData} margin={{ top: 10, right: 15, left: 10, bottom: 40 }}>
+                <BarChart data={caseStatusData} margin={{ top: 30, right: 15, left: 10, bottom: 40 }}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis 
                     dataKey="status" 
@@ -132,6 +145,7 @@ const StatisticsSection = () => {
                   <YAxis fontSize={10} />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Bar dataKey="count" radius={[2, 2, 0, 0]}>
+                    <LabelList content={CustomLabel} />
                     {caseStatusData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.fill} />
                     ))}
@@ -150,7 +164,7 @@ const StatisticsSection = () => {
           <CardContent>
             <ChartContainer config={chartConfig} className="h-[240px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={districtData} margin={{ top: 10, right: 15, left: 10, bottom: 40 }}>
+                <BarChart data={districtData} margin={{ top: 30, right: 15, left: 10, bottom: 40 }}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis 
                     dataKey="district" 
@@ -162,7 +176,9 @@ const StatisticsSection = () => {
                   />
                   <YAxis fontSize={10} />
                   <ChartTooltip content={<ChartTooltipContent />} />
-                  <Bar dataKey="cases" fill="#f59e0b" />
+                  <Bar dataKey="cases" fill="#f59e0b">
+                    <LabelList content={CustomLabel} />
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </ChartContainer>

@@ -45,7 +45,7 @@ const Navbar = () => {
   const navItems = user?.userType === 'headquarters' ? hqNavItems : policeNavItems;
 
   return (
-    <nav className="bg-background border-b border-border sticky top-[73px] z-30">
+    <nav className="bg-background border-b border-border sticky top-[89px] z-40">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-center space-x-1 py-2">
           {navItems.map((item) => {
