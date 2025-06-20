@@ -2,13 +2,12 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell, LabelList } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { mockCriminals, telanganaDistricts } from '@/data/mockCriminals';
 
-// Mock data with 60% arrested and 40% absconding
-const totalCriminals = mockCriminals.length;
-const arrestedCount = Math.round(totalCriminals * 0.6);
-const abscondingCount = Math.round(totalCriminals * 0.4);
+// Calculate real statistics from mock data
+const arrestedCount = mockCriminals.filter(c => c.presentStatus === 'Arrested').length;
+const abscondingCount = mockCriminals.filter(c => c.presentStatus === 'Abscon ding').length;
 
 const accusedStatusData = [
   { status: 'Arrested', count: arrestedCount, fill: '#22c55e' },
@@ -23,10 +22,10 @@ const internationalCount = mockCriminals.filter(c => c.country !== 'India').leng
 const domicileData = [
   { state: 'Telangana', count: telanganaCount },
   { state: 'Other Indian States', count: otherStatesCount },
-  { state: 'Foreigners', count: internationalCount },
+  { state: 'International', count: internationalCount },
 ];
 
-// Calculate case status data from mock criminals with proper colors
+// Calculate case status data from mock criminals with proper colors - FIXED VERSION
 const caseStatusCounts = mockCriminals.reduce((acc, criminal) => {
   acc[criminal.caseStatus] = (acc[criminal.caseStatus] || 0) + 1;
   return acc;
@@ -102,9 +101,7 @@ const StatisticsSection = () => {
                   <XAxis dataKey="state" fontSize={10} />
                   <YAxis fontSize={10} />
                   <ChartTooltip content={<ChartTooltipContent />} />
-                  <Bar dataKey="count" fill="#3b82f6">
-                    <LabelList dataKey="count" position="top" fontSize={12} />
-                  </Bar>
+                  <Bar dataKey="count" fill="#3b82f6" />
                 </BarChart>
               </ResponsiveContainer>
             </ChartContainer>
@@ -122,7 +119,7 @@ const StatisticsSection = () => {
           <CardContent>
             <ChartContainer config={chartConfig} className="h-[240px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={caseStatusData} margin={{ top: 20, right: 15, left: 10, bottom: 40 }}>
+                <BarChart data={caseStatusData} margin={{ top: 10, right: 15, left: 10, bottom: 40 }}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis 
                     dataKey="status" 
@@ -135,7 +132,6 @@ const StatisticsSection = () => {
                   <YAxis fontSize={10} />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Bar dataKey="count" radius={[2, 2, 0, 0]}>
-                    <LabelList dataKey="count" position="top" fontSize={10} />
                     {caseStatusData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.fill} />
                     ))}
@@ -154,7 +150,7 @@ const StatisticsSection = () => {
           <CardContent>
             <ChartContainer config={chartConfig} className="h-[240px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={districtData} margin={{ top: 20, right: 15, left: 10, bottom: 40 }}>
+                <BarChart data={districtData} margin={{ top: 10, right: 15, left: 10, bottom: 40 }}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis 
                     dataKey="district" 
@@ -166,9 +162,7 @@ const StatisticsSection = () => {
                   />
                   <YAxis fontSize={10} />
                   <ChartTooltip content={<ChartTooltipContent />} />
-                  <Bar dataKey="cases" fill="#f59e0b">
-                    <LabelList dataKey="cases" position="top" fontSize={10} />
-                  </Bar>
+                  <Bar dataKey="cases" fill="#f59e0b" />
                 </BarChart>
               </ResponsiveContainer>
             </ChartContainer>

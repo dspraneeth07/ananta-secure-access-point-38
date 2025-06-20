@@ -45,9 +45,9 @@ const Navbar = () => {
   const navItems = user?.userType === 'headquarters' ? hqNavItems : policeNavItems;
 
   return (
-    <nav className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border sticky top-[88px] z-40">
+    <nav className="bg-background border-b border-border sticky top-[73px] z-30">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-center space-x-1 py-3">
+        <div className="flex items-center justify-center space-x-1 py-2">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
@@ -57,13 +57,13 @@ const Navbar = () => {
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  "flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+                  "flex items-center space-x-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors",
                   isActive 
-                    ? "bg-primary text-primary-foreground shadow-sm" 
+                    ? "bg-primary text-primary-foreground" 
                     : "text-muted-foreground hover:text-foreground hover:bg-accent"
                 )}
               >
-                <Icon className="w-4 h-4" />
+                <Icon className="w-3 h-3" />
                 <span>{item.label}</span>
               </Link>
             );
