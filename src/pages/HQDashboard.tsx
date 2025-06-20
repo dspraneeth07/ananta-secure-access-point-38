@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { BarChart3, Users, FileText, AlertTriangle } from 'lucide-react';
@@ -8,14 +7,14 @@ import StatisticsSection from '@/components/StatisticsSection';
 const HQDashboard = () => {
   return (
     <Layout>
-      <div className="space-y-6">
-        <div>
+      <div className="space-y-4">
+        <div className="mb-4">
           <h1 className="text-3xl font-bold text-foreground">Headquarters Dashboard</h1>
           <p className="text-muted-foreground">Command Center Overview</p>
         </div>
 
         {/* Quick Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card className="p-6">
             <div className="flex items-center space-x-4">
               <div className="p-3 bg-primary/20 rounded-full">
@@ -69,7 +68,7 @@ const HQDashboard = () => {
         <StatisticsSection />
 
         {/* Recent Activities and Station Status */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <Card className="p-6">
             <h3 className="text-lg font-semibold mb-4">Recent Activities</h3>
             <div className="space-y-3">
