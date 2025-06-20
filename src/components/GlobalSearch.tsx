@@ -20,8 +20,8 @@ const drugCategories = {
 
 const GlobalSearch: React.FC<GlobalSearchProps> = ({ onSelect }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [selectedDrugType, setSelectedDrugType] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedDrugType, setSelectedDrugType] = useState<string>('all');
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [showResults, setShowResults] = useState(false);
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ onSelect }) => {
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     
-    if (query.length > 2 || selectedCategory || selectedDrugType) {
+    if (query.length > 2 || (selectedCategory && selectedCategory !== 'all') || (selectedDrugType && selectedDrugType !== 'all')) {
       let results = mockCriminals;
       
       // Filter by search query
@@ -46,7 +46,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ onSelect }) => {
       }
       
       // Filter by drug category
-      if (selectedCategory && drugCategories[selectedCategory as keyof typeof drugCategories]) {
+      if (selectedCategory && selectedCategory !== 'all' && drugCategories[selectedCategory as keyof typeof drugCategories]) {
         const categoryDrugs = drugCategories[selectedCategory as keyof typeof drugCategories];
         results = results.filter(criminal => 
           categoryDrugs.some(drug => criminal.drugType.toLowerCase().includes(drug.toLowerCase()))
@@ -54,7 +54,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ onSelect }) => {
       }
       
       // Filter by specific drug type
-      if (selectedDrugType) {
+      if (selectedDrugType && selectedDrugType !== 'all') {
         results = results.filter(criminal => 
           criminal.drugType.toLowerCase().includes(selectedDrugType.toLowerCase())
         );
@@ -69,7 +69,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ onSelect }) => {
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
-    setSelectedDrugType('');
+    setSelectedDrugType('all');
     handleSearch(searchQuery);
   };
 
@@ -81,8 +81,8 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ onSelect }) => {
   const handleSelect = (criminal: any) => {
     setShowResults(false);
     setSearchQuery('');
-    setSelectedCategory('');
-    setSelectedDrugType('');
+    setSelectedCategory('all');
+    setSelectedDrugType('all');
     
     if (onSelect) {
       onSelect(criminal);
@@ -99,20 +99,20 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ onSelect }) => {
             <SelectValue placeholder="Drug Category" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Categories</SelectItem>
+            <SelectItem value="all">All Categories</SelectItem>
             {Object.keys(drugCategories).map(category => (
               <SelectItem key={category} value={category}>{category}</SelectItem>
             ))}
           </SelectContent>
         </Select>
         
-        {selectedCategory && (
+        {selectedCategory && selectedCategory !== 'all' && (
           <Select value={selectedDrugType} onValueChange={handleDrugTypeChange}>
             <SelectTrigger className="w-48">
               <SelectValue placeholder="Drug Type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Types</SelectItem>
+              <SelectItem value="all">All Types</SelectItem>
               {drugCategories[selectedCategory as keyof typeof drugCategories]?.map(drug => (
                 <SelectItem key={drug} value={drug}>{drug}</SelectItem>
               ))}
@@ -151,7 +151,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ onSelect }) => {
         </Card>
       )}
       
-      {showResults && searchResults.length === 0 && (searchQuery.length > 2 || selectedCategory || selectedDrugType) && (
+      {showResults && searchResults.length === 0 && (searchQuery.length > 2 || (selectedCategory && selectedCategory !== 'all') || (selectedDrugType && selectedDrugType !== 'all')) && (
         <Card className="absolute top-full left-0 right-0 mt-1 z-50">
           <CardContent className="p-4 text-center text-muted-foreground">
             No results found for your search criteria
