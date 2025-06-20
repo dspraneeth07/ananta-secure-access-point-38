@@ -7,7 +7,7 @@ import { mockCriminals, telanganaDistricts } from '@/data/mockCriminals';
 
 // Calculate real statistics from mock data
 const arrestedCount = mockCriminals.filter(c => c.presentStatus === 'Arrested').length;
-const abscondingCount = mockCriminals.filter(c => c.presentStatus === 'Absconding').length;
+const abscondingCount = mockCriminals.filter(c => c.presentStatus === 'Abscon ding').length;
 
 const accusedStatusData = [
   { status: 'Arrested', count: arrestedCount, fill: '#22c55e' },
@@ -58,22 +58,22 @@ const chartConfig = {
 
 const StatisticsSection = () => {
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Accused Status Report */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold">Accused Status Report</CardTitle>
+        <Card className="h-[280px]">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-semibold">Accused Status Report</CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={chartConfig} className="h-[300px]">
+            <ChartContainer config={chartConfig} className="h-[200px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={accusedStatusData}
                     cx="50%"
                     cy="50%"
-                    outerRadius={80}
+                    outerRadius={60}
                     dataKey="count"
                     label={({ status, count }) => `${status}: ${count}`}
                   >
@@ -89,17 +89,17 @@ const StatisticsSection = () => {
         </Card>
 
         {/* Accused Domicile Status Report */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold">Accused Domicile Status (Location-wise)</CardTitle>
+        <Card className="h-[280px]">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-semibold">Accused Domicile Status (Location-wise)</CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={chartConfig} className="h-[300px]">
+            <ChartContainer config={chartConfig} className="h-[200px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={domicileData}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="state" />
-                  <YAxis />
+                  <XAxis dataKey="state" fontSize={10} />
+                  <YAxis fontSize={10} />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Bar dataKey="count" fill="#3b82f6" />
                 </BarChart>
@@ -109,62 +109,66 @@ const StatisticsSection = () => {
         </Card>
       </div>
 
-      {/* Case Status Distribution - CHANGED TO VERTICAL BAR CHART */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold">State-wise Case Status Details</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfig} className="h-[400px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={caseStatusData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis 
-                  dataKey="status" 
-                  angle={-45}
-                  textAnchor="end"
-                  height={100}
-                  interval={0}
-                  fontSize={12}
-                />
-                <YAxis />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="count" radius={[4, 4, 0, 0]}>
-                  {caseStatusData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.fill} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+      {/* Bottom row - Side by side charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Case Status Distribution */}
+        <Card className="h-[320px]">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-semibold">State-wise Case Status Details</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={chartConfig} className="h-[240px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={caseStatusData} margin={{ top: 10, right: 15, left: 10, bottom: 40 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis 
+                    dataKey="status" 
+                    angle={-45}
+                    textAnchor="end"
+                    height={60}
+                    interval={0}
+                    fontSize={9}
+                  />
+                  <YAxis fontSize={10} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Bar dataKey="count" radius={[2, 2, 0, 0]}>
+                    {caseStatusData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.fill} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </ChartContainer>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
 
-      {/* District-wise Cases */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold">District-wise Reported Cases (Telangana)</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfig} className="h-[500px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={districtData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis 
-                  dataKey="district" 
-                  angle={-45}
-                  textAnchor="end"
-                  height={100}
-                  interval={0}
-                />
-                <YAxis />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="cases" fill="#f59e0b" />
-              </BarChart>
-            </ResponsiveContainer>
-          </ChartContainer>
-        </CardContent>
-      </Card>
+        {/* District-wise Cases */}
+        <Card className="h-[320px]">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-semibold">District-wise Reported Cases (Telangana)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={chartConfig} className="h-[240px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={districtData} margin={{ top: 10, right: 15, left: 10, bottom: 40 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis 
+                    dataKey="district" 
+                    angle={-45}
+                    textAnchor="end"
+                    height={60}
+                    interval={0}
+                    fontSize={9}
+                  />
+                  <YAxis fontSize={10} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Bar dataKey="cases" fill="#f59e0b" />
+                </BarChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };

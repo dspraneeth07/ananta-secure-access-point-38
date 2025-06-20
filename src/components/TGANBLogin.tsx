@@ -131,28 +131,28 @@ const TGANBLogin = () => {
         <div className="absolute bottom-80 right-80 w-14 h-10 bg-gradient-to-r from-rose-400 via-rose-500 to-rose-600 rounded-full transform -rotate-60 animate-pulse delay-900 shadow-2xl border-2 border-rose-300"></div>
       </div>
 
-      {/* Header Section */}
-      <header className="relative z-10 pt-2 pb-1">
+      {/* Header Section - Reduced padding */}
+      <header className="relative z-10 pt-4 pb-2">
         <div className="container mx-auto px-4 text-center">
-          {/* Official Logo */}
-          <div className="mb-1 animate-fade-in">
+          {/* Official Logo - INCREASED SIZE */}
+          <div className="mb-2 animate-fade-in">
             <img 
               src="/lovable-uploads/68edd6e3-5f88-4e5e-a0be-b0e347c0ea8b.png" 
               alt="TGANB Official Logo" 
-              className="w-14 h-14 md:w-16 md:h-16 mx-auto mb-1 animate-pulse rounded-full shadow-2xl"
+              className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-2 animate-pulse rounded-full shadow-2xl"
             />
           </div>
           
-          {/* Official Title */}
-          <h1 className="text-base md:text-xl font-bold font-roboto-condensed uppercase tracking-wider text-white dark:text-gray-100 mb-1 animate-fade-in">
+          {/* Official Title - INCREASED FONT SIZE */}
+          <h1 className="text-xl md:text-3xl lg:text-4xl font-bold font-roboto-condensed uppercase tracking-wider text-white dark:text-gray-100 mb-2 animate-fade-in">
             Telangana Anti Narcotics Bureau
           </h1>
-          <p className="text-gray-300 dark:text-gray-400 text-xs font-medium uppercase tracking-wide">
+          <p className="text-gray-300 dark:text-gray-400 text-sm font-medium uppercase tracking-wide">
             Secure Access Portal
           </p>
           
           {/* Security Badge */}
-          <div className="flex items-center justify-center mt-1 text-xs text-blue-300 dark:text-blue-400">
+          <div className="flex items-center justify-center mt-2 text-xs text-blue-300 dark:text-blue-400">
             <Shield className="w-3 h-3 mr-1" />
             <span className="font-medium">CLASSIFIED ACCESS ONLY</span>
           </div>
@@ -160,14 +160,14 @@ const TGANBLogin = () => {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex items-center justify-center px-4 py-1">
+      <main className="flex-1 flex items-center justify-center px-4 py-2">
         <div className="w-full max-w-4xl">
-          {/* Panel Selector */}
-          <div className="flex justify-center mb-2">
-            <div className="bg-black/30 dark:bg-black/50 backdrop-blur-sm rounded-lg p-1 inline-flex border border-gray-600 dark:border-gray-500">
+          {/* Panel Selector - REDUCED SPACING */}
+          <div className="flex justify-center mb-3">
+            <div className="bg-black/30 dark:bg-black/50 backdrop-blur-sm rounded-lg p-0.5 inline-flex border border-gray-600 dark:border-gray-500">
               <button
                 onClick={() => setActivePanel('police')}
-                className={`px-3 md:px-4 py-2 rounded-md font-semibold transition-all duration-300 text-xs md:text-sm ${
+                className={`px-3 md:px-4 py-1.5 rounded-md font-semibold transition-all duration-300 text-xs md:text-sm ${
                   activePanel === 'police'
                     ? 'bg-blue-600 text-white shadow-lg'
                     : 'text-gray-300 dark:text-gray-400 hover:text-white dark:hover:text-gray-200'
@@ -177,7 +177,7 @@ const TGANBLogin = () => {
               </button>
               <button
                 onClick={() => setActivePanel('headquarters')}
-                className={`px-3 md:px-4 py-2 rounded-md font-semibold transition-all duration-300 text-xs md:text-sm ${
+                className={`px-3 md:px-4 py-1.5 rounded-md font-semibold transition-all duration-300 text-xs md:text-sm ${
                   activePanel === 'headquarters'
                     ? 'bg-blue-600 text-white shadow-lg'
                     : 'text-gray-300 dark:text-gray-400 hover:text-white dark:hover:text-gray-200'
@@ -313,8 +313,8 @@ const TGANBLogin = () => {
         </div>
       </main>
 
-      {/* Footer Disclaimer */}
-      <footer className="relative z-10 py-1 border-t border-gray-700 dark:border-gray-600">
+      {/* Footer Disclaimer - Reduced padding */}
+      <footer className="relative z-10 py-2 border-t border-gray-700 dark:border-gray-600">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-1">
             <div className="flex items-center justify-center text-red-400 dark:text-red-500 text-xs font-medium">
